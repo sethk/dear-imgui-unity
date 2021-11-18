@@ -14,7 +14,7 @@
     "url": "https://realgames.co"
   },
   "dependencies": {
-    "com.unity.collections": "0.5.0-preview.9"
+    "com.unity.collections": "1.0.0-pre.6"
   },
   "repository": {
     "type": "git",
