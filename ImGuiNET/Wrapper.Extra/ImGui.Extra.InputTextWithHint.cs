@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Text;
-
+/*
 namespace ImGuiNET
 {
     // Same as ImGui.Manual.InputText but for InputTextWithHint
@@ -119,5 +119,5 @@ namespace ImGuiNET
 
             return result != 0;
         }
-    }
 }
+*/

@@ -149,9 +149,9 @@ namespace ImGuiNET.Unity
             s.AntiAliasedLines       = AntiAliasedLines;
             s.AntiAliasedFill        = AntiAliasedFill;
             s.CurveTessellationTol   = CurveTessellationTol;
-            s.CircleSegmentMaxError  = CircleSegmentMaxError;
+            //s.CircleSegmentMaxError  = CircleSegmentMaxError;
             for (var i = 0; i < Colors.Length; ++i)
-                s.Colors[i] = Colors[i];
+                s.Colors[i] = new Vector4(Colors[i].r, Colors[i].g, Colors[i].b, Colors[i].a);
         }
 
         public unsafe void SetFrom(ImGuiStylePtr s)
@@ -190,7 +190,7 @@ namespace ImGuiNET.Unity
             AntiAliasedLines       = s.AntiAliasedLines;
             AntiAliasedFill        = s.AntiAliasedFill;
             CurveTessellationTol   = s.CurveTessellationTol;
-            CircleSegmentMaxError  = s.CircleSegmentMaxError;
+            //CircleSegmentMaxError  = s.CircleSegmentMaxError;
             for (var i = 0; i < Colors.Length; ++i)
                 Colors[i] = s.Colors[i];
         }

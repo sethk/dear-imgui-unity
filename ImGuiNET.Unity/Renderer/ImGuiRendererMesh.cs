@@ -84,8 +84,8 @@ namespace ImGuiNET.Unity
             for (int n = 0, nMax = drawData.CmdListsCount; n < nMax; ++n)
                 subMeshCount += drawData.CmdListsRange[n].CmdBuffer.Size;
 
-            // set mesh structure
-            if (_prevSubMeshCount != subMeshCount)
+            // set mesh structure - sharing the chunks like this without clearing will cause a warning in Unity
+            //if (_prevSubMeshCount != subMeshCount)
             {
                 _mesh.Clear(true); // occasionally crashes when changing subMeshCount without clearing first
                 _mesh.subMeshCount = _prevSubMeshCount = subMeshCount;

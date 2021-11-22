@@ -45,6 +45,7 @@ namespace ImGuiNET.Unity
 
         void Awake()
         {
+            // this will only call once, so reloads will not recreate the context
             _context = ImGuiUn.CreateUnityContext();
         }
 
@@ -65,9 +66,12 @@ namespace ImGuiNET.Unity
             else
                 _camera.AddCommandBuffer(CameraEvent.AfterEverything, _cmd);
 
+            // configure the context here if it's null, this means script reloads should be ok
+            if( _context == null)
+                _context = ImGuiUn.CreateUnityContext();
+
             ImGuiUn.SetUnityContext(_context);
             ImGuiIOPtr io = ImGui.GetIO();
-
             _initialConfiguration.ApplyTo(io);
             _style?.ApplyTo(ImGui.GetStyle());
 
@@ -130,6 +134,9 @@ namespace ImGuiNET.Unity
 
         void Update()
         {
+            if (_context == null)
+                return;
+
             ImGuiUn.SetUnityContext(_context);
             ImGuiIOPtr io = ImGui.GetIO();
 
