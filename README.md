@@ -36,4 +36,4 @@ UPM package for the immediate mode GUI library, Dear ImGui (https://github.com/o
 
 This package uses Dear ImGui C bindings by [cimgui](https://github.com/cimgui/cimgui) and the C# wrapper by [ImGui.NET](https://github.com/mellinoe/ImGui.NET).
 
-The development project for the package can be found at https://github.com/realgamessoftware/dear-imgui-unity-dev .
+The development project for the package can be found at https://github.com/GuybrushThreepwood-GitHub/dear-imgui-unity-dev (forked from: https://github.com/realgamessoftware/dear-imgui-unity-dev ) .
