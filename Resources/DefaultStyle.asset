@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DefaultStyle
   m_EditorClassIdentifier: 
   Alpha: 1
-  DisabledAlpha: 0
+  DisabledAlpha: 0.6
   WindowPadding: {x: 8, y: 8}
   WindowRounding: 0
   WindowBorderSize: 1
