@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: DefaultStyle
   m_EditorClassIdentifier: 
   Alpha: 1
+  DisabledAlpha: 0
   WindowPadding: {x: 8, y: 8}
-  WindowRounding: 7
+  WindowRounding: 0
   WindowBorderSize: 1
   WindowMinSize: {x: 32, y: 32}
   WindowTitleAlign: {x: 0, y: 0.5}
@@ -28,6 +29,7 @@ MonoBehaviour:
   FrameBorderSize: 0
   ItemSpacing: {x: 8, y: 4}
   ItemInnerSpacing: {x: 4, y: 4}
+  CellPadding: {x: 4, y: 2}
   TouchExtraPadding: {x: 0, y: 0}
   IndentSpacing: 21
   ColumnsMinSpacing: 6
@@ -35,8 +37,10 @@ MonoBehaviour:
   ScrollbarRounding: 9
   GrabMinSize: 10
   GrabRounding: 0
+  LogSliderDeadzone: 4
   TabRounding: 4
   TabBorderSize: 0
+  TabMinWidthForCloseButton: 0
   ColorButtonPosition: 1
   ButtonTextAlign: {x: 0.5, y: 0.5}
   SelectableTextAlign: {x: 0, y: 0}
@@ -44,9 +48,10 @@ MonoBehaviour:
   DisplaySafeAreaPadding: {x: 3, y: 3}
   MouseCursorScale: 1
   AntiAliasedLines: 1
+  AntiAliasedLinesUseTex: 1
   AntiAliasedFill: 1
   CurveTessellationTol: 1.25
-  CircleSegmentMaxError: 1.6
+  CircleTessellationMaxError: 0.3
   Colors:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 0.5, g: 0.5, b: 0.5, a: 1}
@@ -78,18 +83,23 @@ MonoBehaviour:
   - {r: 0.43, g: 0.43, b: 0.5, a: 0.5}
   - {r: 0.1, g: 0.4, b: 0.75, a: 0.78}
   - {r: 0.1, g: 0.4, b: 0.75, a: 1}
-  - {r: 0.26, g: 0.59, b: 0.98, a: 0.25}
+  - {r: 0.26, g: 0.59, b: 0.98, a: 0.2}
   - {r: 0.26, g: 0.59, b: 0.98, a: 0.67}
   - {r: 0.26, g: 0.59, b: 0.98, a: 0.95}
-  - {r: 0.17999999, g: 0.34999996, b: 0.58000004, a: 0.862}
+  - {r: 0.17, g: 0.35, b: 0.58, a: 0.86}
   - {r: 0.26, g: 0.59, b: 0.98, a: 0.8}
-  - {r: 0.19999999, g: 0.40999997, b: 0.68, a: 1}
-  - {r: 0.068, g: 0.10199998, b: 0.14800003, a: 0.9724}
-  - {r: 0.13599998, g: 0.26199996, b: 0.424, a: 1}
+  - {r: 0.2, g: 0.41, b: 0.68, a: 1}
+  - {r: 0.07, g: 0.1, b: 0.15, a: 0.97}
+  - {r: 0.14, g: 0.26, b: 0.42, a: 1}
   - {r: 0.61, g: 0.61, b: 0.61, a: 1}
   - {r: 1, g: 0.43, b: 0.35, a: 1}
   - {r: 0.9, g: 0.7, b: 0, a: 1}
   - {r: 1, g: 0.6, b: 0, a: 1}
+  - {r: 0.19, g: 0.19, b: 0.2, a: 1}
+  - {r: 0.31, g: 0.31, b: 0.35, a: 1}
+  - {r: 0.23, g: 0.23, b: 0.25, a: 1}
+  - {r: 0, g: 0, b: 0, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0.06}
   - {r: 0.26, g: 0.59, b: 0.98, a: 0.35}
   - {r: 1, g: 1, b: 0, a: 0.9}
   - {r: 0.26, g: 0.59, b: 0.98, a: 1}

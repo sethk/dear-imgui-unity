@@ -8,6 +8,9 @@ namespace ImGuiNET.Unity
         [Tooltip("Global alpha applies to everything in ImGui.")]
         public float Alpha;
 
+        [Tooltip("Additional alpha multiplier applied by BeginDisabled(). Multiply over current value of Alpha.")]
+        public float DisabledAlpha;
+
         [Tooltip("Padding within a window.")]
         public Vector2 WindowPadding;
 
@@ -53,6 +56,9 @@ namespace ImGuiNET.Unity
         [Tooltip("Horizontal and vertical spacing between within elements of a composed widget (e.g. a slider and its label).")]
         public Vector2 ItemInnerSpacing;
 
+        [Tooltip("Padding within a table cell")]
+        public Vector2 CellPadding;
+
         [Tooltip("Expand reactive bounding box for touch-based system where touch position is not accurate enough. Unfortunately we don't sort widgets so priority on overlap will always be given to the first widget. So don't grow this too much!")]
         public Vector2 TouchExtraPadding;
 
@@ -74,11 +80,17 @@ namespace ImGuiNET.Unity
         [Tooltip("Radius of grabs corners rounding. Set to 0.0f to have rectangular slider grabs.")]
         public float GrabRounding;
 
+        [Tooltip("The size in pixels of the dead-zone around zero on logarithmic sliders that cross zero.")]
+        public float LogSliderDeadzone;
+
         [Tooltip("Radius of upper corners of a tab. Set to 0.0f to have rectangular tabs.")]
         public float TabRounding;
 
         [Tooltip("Thickness of border around tabs.")]
         public float TabBorderSize;
+
+        [Tooltip("Minimum width for close button to appears on an unselected tab when hovered. Set to 0.0f to always show when hovering, set to FLT_MAX to never show close button unless selected.")]
+        public float TabMinWidthForCloseButton;
 
         [Tooltip("Side of the color button in the ColorEdit4 widget (left/right). Defaults to ImGuiDir_Right.")]
         public ImGuiDir ColorButtonPosition;
@@ -101,6 +113,9 @@ namespace ImGuiNET.Unity
         [Tooltip("Enable anti-aliasing on lines/borders. Disable if you are really tight on CPU/GPU.")]
         public bool AntiAliasedLines;
 
+        [Tooltip("Enable anti-aliased lines/borders using textures where possible.")]
+        public bool AntiAliasedLinesUseTex;
+
         [Tooltip("Enable anti-aliasing on filled shapes (rounded rectangles, circles, etc.)")]
         public bool AntiAliasedFill;
 
@@ -108,7 +123,7 @@ namespace ImGuiNET.Unity
         public float CurveTessellationTol;
 
         [Tooltip("Maximum error (in pixels) allowed when using AddCircle()/AddCircleFilled() or drawing rounded corner rectangles with no explicit segment count specified. Decrease for higher quality but more geometry.")]
-        public float CircleSegmentMaxError;
+        public float CircleTessellationMaxError = 0.3f;
 
         [HideInInspector]
         public Color[] Colors = new Color[(int)ImGuiCol.COUNT];
@@ -116,6 +131,7 @@ namespace ImGuiNET.Unity
         public unsafe void ApplyTo(ImGuiStylePtr s)
         {
             s.Alpha                  = Alpha;
+            s.DisabledAlpha          = DisabledAlpha;
             s.WindowPadding          = WindowPadding;
             s.WindowRounding         = WindowRounding;
             s.WindowBorderSize       = WindowBorderSize;
@@ -131,6 +147,7 @@ namespace ImGuiNET.Unity
             s.FrameBorderSize        = FrameBorderSize;
             s.ItemSpacing            = ItemSpacing;
             s.ItemInnerSpacing       = ItemInnerSpacing;
+            s.CellPadding            = CellPadding;
             s.TouchExtraPadding      = TouchExtraPadding;
             s.IndentSpacing          = IndentSpacing;
             s.ColumnsMinSpacing      = ColumnsMinSpacing;
@@ -138,8 +155,10 @@ namespace ImGuiNET.Unity
             s.ScrollbarRounding      = ScrollbarRounding;
             s.GrabMinSize            = GrabMinSize;
             s.GrabRounding           = GrabRounding;
+            s.LogSliderDeadzone      = LogSliderDeadzone;
             s.TabRounding            = TabRounding;
             s.TabBorderSize          = TabBorderSize;
+            s.TabMinWidthForCloseButton = TabMinWidthForCloseButton;
             s.ColorButtonPosition    = ColorButtonPosition;
             s.ButtonTextAlign        = ButtonTextAlign;
             s.SelectableTextAlign    = SelectableTextAlign;
@@ -147,9 +166,10 @@ namespace ImGuiNET.Unity
             s.DisplaySafeAreaPadding = DisplaySafeAreaPadding;
             s.MouseCursorScale       = MouseCursorScale;
             s.AntiAliasedLines       = AntiAliasedLines;
+            s.AntiAliasedLinesUseTex = AntiAliasedLinesUseTex;
             s.AntiAliasedFill        = AntiAliasedFill;
             s.CurveTessellationTol   = CurveTessellationTol;
-            //s.CircleSegmentMaxError  = CircleSegmentMaxError;
+            s.CircleTessellationMaxError  = CircleTessellationMaxError;
             for (var i = 0; i < Colors.Length; ++i)
                 s.Colors[i] = new Vector4(Colors[i].r, Colors[i].g, Colors[i].b, Colors[i].a);
         }
@@ -157,6 +177,7 @@ namespace ImGuiNET.Unity
         public unsafe void SetFrom(ImGuiStylePtr s)
         {
             Alpha                  = s.Alpha;
+            DisabledAlpha          = s.DisabledAlpha;
             WindowPadding          = s.WindowPadding;
             WindowRounding         = s.WindowRounding;
             WindowBorderSize       = s.WindowBorderSize;
@@ -172,6 +193,7 @@ namespace ImGuiNET.Unity
             FrameBorderSize        = s.FrameBorderSize;
             ItemSpacing            = s.ItemSpacing;
             ItemInnerSpacing       = s.ItemInnerSpacing;
+            CellPadding            = s.CellPadding;
             TouchExtraPadding      = s.TouchExtraPadding;
             IndentSpacing          = s.IndentSpacing;
             ColumnsMinSpacing      = s.ColumnsMinSpacing;
@@ -179,8 +201,10 @@ namespace ImGuiNET.Unity
             ScrollbarRounding      = s.ScrollbarRounding;
             GrabMinSize            = s.GrabMinSize;
             GrabRounding           = s.GrabRounding;
+            LogSliderDeadzone      = s.LogSliderDeadzone;
             TabRounding            = s.TabRounding;
             TabBorderSize          = s.TabBorderSize;
+            TabMinWidthForCloseButton = s.TabMinWidthForCloseButton;
             ColorButtonPosition    = s.ColorButtonPosition;
             ButtonTextAlign        = s.ButtonTextAlign;
             SelectableTextAlign    = s.SelectableTextAlign;
@@ -188,9 +212,10 @@ namespace ImGuiNET.Unity
             DisplaySafeAreaPadding = s.DisplaySafeAreaPadding;
             MouseCursorScale       = s.MouseCursorScale;
             AntiAliasedLines       = s.AntiAliasedLines;
+            AntiAliasedLinesUseTex = s.AntiAliasedLinesUseTex;
             AntiAliasedFill        = s.AntiAliasedFill;
             CurveTessellationTol   = s.CurveTessellationTol;
-            //CircleSegmentMaxError  = s.CircleSegmentMaxError;
+            CircleTessellationMaxError  = s.CircleTessellationMaxError;
             for (var i = 0; i < Colors.Length; ++i)
                 Colors[i] = s.Colors[i];
         }

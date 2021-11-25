@@ -41,13 +41,16 @@ namespace ImGuiNET.Unity
         [Tooltip("Set to false to disable blinking cursor.")]
         public bool TextCursorBlink;
 
+        [Tooltip("[BETA] Enable turning DragXXX widgets into text input with a simple mouse click-release (without moving).")]
+        public bool DragClickToInputText;
+
         [Tooltip("Enable resizing from the edges and from the lower-left corner.")]
         public bool ResizeFromEdges;
 
-        [Tooltip("[BETA] Set to true to only allow moving windows when clicked+dragged from the title bar. Windows without a title bar are not affected.")]
+        [Tooltip("Enable allowing to move windows only when clicking on their title bar. Does not apply to windows without a title bar.")]
         public bool MoveFromTitleOnly;
 
-        [Tooltip("[BETA] Compact window memory usage when unused. Set to -1.0f to disable.")]
+        [Tooltip("Timer (in seconds) to free transient windows/tables memory buffers when unused. Set to -1.0f to disable.")]
         public float MemoryCompactTimer;
 
         public void SetDefaults()
@@ -72,6 +75,7 @@ namespace ImGuiNET.Unity
             io.FontGlobalScale = FontGlobalScale;
             io.FontAllowUserScaling = FontAllowUserScaling;
             io.ConfigInputTextCursorBlink = TextCursorBlink;
+            io.ConfigDragClickToInputText = DragClickToInputText;
             io.ConfigWindowsResizeFromEdges = ResizeFromEdges;
             io.ConfigWindowsMoveFromTitleBarOnly = MoveFromTitleOnly;
             io.ConfigMemoryCompactTimer = MemoryCompactTimer;
@@ -91,6 +95,7 @@ namespace ImGuiNET.Unity
             FontGlobalScale = io.FontGlobalScale;
             FontAllowUserScaling = io.FontAllowUserScaling;
             TextCursorBlink = io.ConfigInputTextCursorBlink;
+            DragClickToInputText = io.ConfigDragClickToInputText;
             ResizeFromEdges = io.ConfigWindowsResizeFromEdges;
             MoveFromTitleOnly = io.ConfigWindowsMoveFromTitleBarOnly;
             MemoryCompactTimer = io.ConfigMemoryCompactTimer;

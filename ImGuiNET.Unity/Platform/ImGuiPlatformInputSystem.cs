@@ -90,6 +90,7 @@ namespace ImGuiNET.Unity
             // input
             UpdateKeyboard(io, Keyboard.current);                               // update keyboard state
             UpdateMouse(io, Mouse.current);                                     // update mouse state
+            UpdateTouchscreen(io, Touchscreen.current);                         // update touches state
             UpdateCursor(io, ImGui.GetMouseCursor());                           // update Unity cursor with the cursor requested by ImGui
             UpdateGamepad(io, Gamepad.current);                                 // update game controllers (if enabled and available)
 
@@ -178,6 +179,22 @@ namespace ImGuiNET.Unity
             io.MouseDown[0] = mouse.leftButton.isPressed;
             io.MouseDown[1] = mouse.rightButton.isPressed;
             io.MouseDown[2] = mouse.middleButton.isPressed;
+        }
+
+        static void UpdateTouchscreen(ImGuiIOPtr io, Touchscreen touchscreen)
+        {
+            if (touchscreen == null)
+                return;
+
+            io.MousePos = ImGuiUn.ScreenToImGui(touchscreen.position.ReadValue());
+
+            //Vector2 mouseScroll = mouse.scroll.ReadValue() / 120f;
+            //io.MouseWheel = mouseScroll.y;
+            //io.MouseWheelH = mouseScroll.x;
+
+            io.MouseDown[0] = touchscreen.press.isPressed;
+            //io.MouseDown[1] = mouse.rightButton.isPressed;
+            //io.MouseDown[2] = mouse.middleButton.isPressed;
         }
 
         static void UpdateGamepad(ImGuiIOPtr io, Gamepad gamepad)

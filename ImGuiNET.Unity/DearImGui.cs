@@ -73,6 +73,31 @@ namespace ImGuiNET.Unity
             ImGuiUn.SetUnityContext(_context);
             ImGuiIOPtr io = ImGui.GetIO();
             _initialConfiguration.ApplyTo(io);
+
+            // TODO: here is a good place to dpi scale
+            /*if (_style)
+            {
+                float scale_factor = 0.5f;
+
+                _style.WindowPadding *= scale_factor;
+                _style.WindowMinSize *= scale_factor;
+                _style.WindowRounding *= scale_factor;
+                //_style.ChildWindowRounding *= scale_factor;
+                _style.FramePadding *= scale_factor;
+                _style.FrameRounding *= scale_factor;
+                _style.ItemSpacing *= scale_factor;
+                _style.ItemInnerSpacing *= scale_factor;
+                _style.TouchExtraPadding *= scale_factor;
+                _style.IndentSpacing *= scale_factor;
+                _style.ColumnsMinSpacing *= scale_factor;
+                _style.ScrollbarSize *= scale_factor;
+                _style.ScrollbarRounding *= scale_factor;
+                _style.GrabMinSize *= scale_factor;
+                _style.GrabRounding *= scale_factor;
+                _style.DisplayWindowPadding *= scale_factor;
+                _style.DisplaySafeAreaPadding *= scale_factor;
+            }*/
+
             _style?.ApplyTo(ImGui.GetStyle());
 
             _context.textures.BuildFontAtlas(io, _fontAtlasConfiguration);
