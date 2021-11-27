@@ -19,6 +19,8 @@ namespace ImGuiNET.Unity
         CommandBuffer _cmd;
         bool _usingURP;
 
+        //float DEFAULT_SCREEN_DPI = 96.0f;
+
         public event System.Action Layout;  // Layout event for *this* ImGui instance
         [SerializeField] bool _doGlobalLayout = true; // do global/default Layout event too
 
@@ -77,7 +79,7 @@ namespace ImGuiNET.Unity
             // TODO: here is a good place to dpi scale
             /*if (_style)
             {
-                float scale_factor = 0.5f;
+                float scale_factor = Mathf.Min( 2.0f, (Screen.dpi / DEFAULT_SCREEN_DPI) );
 
                 _style.WindowPadding *= scale_factor;
                 _style.WindowMinSize *= scale_factor;
@@ -96,6 +98,8 @@ namespace ImGuiNET.Unity
                 _style.GrabRounding *= scale_factor;
                 _style.DisplayWindowPadding *= scale_factor;
                 _style.DisplaySafeAreaPadding *= scale_factor;
+
+                io.FontGlobalScale = scale_factor;
             }*/
 
             _style?.ApplyTo(ImGui.GetStyle());
