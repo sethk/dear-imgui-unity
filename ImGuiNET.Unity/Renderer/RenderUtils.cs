@@ -3,7 +3,9 @@ using UnityEngine.Rendering;
 #if HAS_URP
 using UnityEngine.Rendering.Universal;
 #endif
-
+#if HAS_HDRP
+using UnityEngine.Rendering.HighDefinition;
+#endif
 namespace ImGuiNET.Unity
 {
     static class RenderUtils
@@ -35,9 +37,19 @@ namespace ImGuiNET.Unity
 #endif
         }
 
+        public static bool IsUsingHDRP()
+        {
+            var currentRP = GraphicsSettings.currentRenderPipeline;
+#if HAS_HDRP
+            return currentRP is HDRenderPipelineAsset;
+#else
+            return false;
+#endif
+        }
+
         public static CommandBuffer GetCommandBuffer(string name)
         {
-#if HAS_URP
+#if HAS_URP || HAS_HDRP
             return CommandBufferPool.Get(name);
 #else
             return new CommandBuffer { name = name };
@@ -46,7 +58,7 @@ namespace ImGuiNET.Unity
 
         public static void ReleaseCommandBuffer(CommandBuffer cmd)
         {
-#if HAS_URP
+#if HAS_URP || HAS_HDRP
             CommandBufferPool.Release(cmd);
 #else
             cmd.Release();

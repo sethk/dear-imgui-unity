@@ -2,6 +2,10 @@
 using UnityEngine.Rendering;
 using Unity.Profiling;
 
+#if HAS_HDRP
+    using UnityEngine.Rendering.HighDefinition;
+#endif
+
 namespace ImGuiNET.Unity
 {
     // This component is responsible for setting up ImGui for use in Unity.
@@ -17,7 +21,11 @@ namespace ImGuiNET.Unity
         IImGuiRenderer _renderer;
         IImGuiPlatform _platform;
         CommandBuffer _cmd;
+#if HAS_HDRP
+        HDAdditionalCameraData _hdCameraData;
+#endif
         bool _usingURP;
+        bool _usingHDRP;
 
         //float DEFAULT_SCREEN_DPI = 96.0f;
 
@@ -40,7 +48,7 @@ namespace ImGuiNET.Unity
         [SerializeField] StyleAsset _style = null;
         [SerializeField] CursorShapesAsset _cursorShapes = null;
 
-        const string CommandBufferTag = "DearImGui";
+        public const string CommandBufferTag = "DearImGui";
         static readonly ProfilerMarker s_prepareFramePerfMarker = new ProfilerMarker("DearImGui.PrepareFrame");
         static readonly ProfilerMarker s_layoutPerfMarker = new ProfilerMarker("DearImGui.Layout");
         static readonly ProfilerMarker s_drawListPerfMarker = new ProfilerMarker("DearImGui.RenderDrawLists");
@@ -59,14 +67,27 @@ namespace ImGuiNET.Unity
         void OnEnable()
         {
             _usingURP = RenderUtils.IsUsingURP();
+            _usingHDRP = RenderUtils.IsUsingHDRP();
+
             if (_camera == null) Fail(nameof(_camera));
             if (_renderFeature == null && _usingURP) Fail(nameof(_renderFeature));
 
             _cmd = RenderUtils.GetCommandBuffer(CommandBufferTag);
-            if (_usingURP)
-                _renderFeature.commandBuffer = _cmd;
+
+            _usingHDRP = RenderUtils.IsUsingHDRP();
+            if (_usingHDRP)
+            {
+                //_hdCameraData = _camera.GetComponent<HDAdditionalCameraData>();
+                //if (_hdCameraData != null)
+                //  _hdCameraData.customRender += HDRPImGuiRender;
+            }
             else
-                _camera.AddCommandBuffer(CameraEvent.AfterEverything, _cmd);
+            {
+                if (_usingURP)
+                    _renderFeature.commandBuffer = _cmd;
+                else
+                    _camera.AddCommandBuffer(CameraEvent.AfterEverything, _cmd);
+            }
 
             // configure the context here if it's null, this means script reloads should be ok
             if( _context == null)
@@ -133,17 +154,27 @@ namespace ImGuiNET.Unity
             _context.textures.Shutdown();
             _context.textures.DestroyFontAtlas(io);
 
-            if (_usingURP)
+
+            _usingHDRP = RenderUtils.IsUsingHDRP();
+            if (_usingHDRP)
             {
-                if (_renderFeature != null)
-                    _renderFeature.commandBuffer = null;
+                //_hdCameraData = _camera.GetComponent<HDAdditionalCameraData>();
+                //if (_hdCameraData != null)
+                //  _hdCameraData.customRender -= HDRPImGuiRender;
             }
             else
             {
-                if (_camera != null)
-                    _camera.RemoveCommandBuffer(CameraEvent.AfterEverything, _cmd);
+                if (_usingURP)
+                {
+                    if (_renderFeature != null)
+                        _renderFeature.commandBuffer = null;
+                }
+                else
+                {
+                    if (_camera != null)
+                        _camera.RemoveCommandBuffer(CameraEvent.AfterEverything, _cmd);
+                }
             }
-
             if (_cmd != null)
                 RenderUtils.ReleaseCommandBuffer(_cmd);
             _cmd = null;
@@ -206,6 +237,30 @@ namespace ImGuiNET.Unity
             _platform?.Shutdown(io);
             _platform = platform;
             _platform?.Initialize(io);
+        }
+
+        void HDRPImGuiRender(ScriptableRenderContext context, HDCamera camera)
+        {
+            if (camera == null || camera.camera == null)
+                return;
+
+            // Target ID
+            /*var rt = camera.camera.targetTexture;
+            var rtid = rt != null ?
+                new RenderTargetIdentifier(rt) :
+                new RenderTargetIdentifier(BuiltinRenderTextureType.CameraTarget);*/
+
+            // Command execute
+            if (_cmd == null) 
+                return;
+
+            context.ExecuteCommandBuffer(_cmd);
+            context.Submit();
+        }
+
+        public CommandBuffer GetCommandBuffer()
+        {
+            return _cmd;
         }
     }
 }

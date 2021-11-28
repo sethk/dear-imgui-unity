@@ -35,6 +35,42 @@
             ENDHLSL
         }
     }
+	
+	// shader for High Definition render pipeline
+    SubShader
+    {
+        Tags { "RenderType" = "Transparent" "RenderPipeline" = "HDRenderPipeline" "PreviewType" = "Plane" }
+        LOD 100
+
+        Lighting Off
+        Cull Off ZWrite On ZTest Always
+        Blend SrcAlpha OneMinusSrcAlpha
+
+        Pass
+        {
+            Name "DEARIMGUI PROCEDURAL HDRP"
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment ImGuiPassFrag
+            #pragma target 3.5
+            #include "Packages/com.realgames.dear-imgui/Resources/Shaders/PassesHighDefinition.hlsl"
+
+            StructuredBuffer<ImVert> _Vertices;
+            int _BaseVertex;
+
+            Varyings vert(uint id : SV_VertexID)
+            {
+#if defined(SHADER_API_D3D11) || defined(SHADER_API_XBOXONE)
+                // BaseVertexLocation is not automatically added to SV_VertexID
+                id += _BaseVertex;
+#endif
+                ImVert v = _Vertices[id];
+                return ImGuiPassVertex(v);
+            }
+            ENDHLSL
+        }
+    }
 
     // shader for builtin rendering
     SubShader
