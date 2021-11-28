@@ -67,6 +67,7 @@ namespace ImGuiNET
         public int MetricsActiveWindows;
         public int MetricsActiveAllocations;
         public Vector2 MouseDelta;
+        public byte WantCaptureMouseUnlessPopupClose;
         public ImGuiKeyModFlags KeyMods;
         public ImGuiKeyModFlags KeyModsPrev;
         public Vector2 MousePosPrev;
@@ -80,6 +81,7 @@ namespace ImGuiNET
         public fixed byte MouseDoubleClicked[5];
         public fixed byte MouseReleased[5];
         public fixed byte MouseDownOwned[5];
+        public fixed byte MouseDownOwnedUnlessPopupClose[5];
         public fixed byte MouseDownWasDoubleClick[5];
         public fixed float MouseDownDuration[5];
         public fixed float MouseDownDurationPrev[5];
@@ -94,6 +96,7 @@ namespace ImGuiNET
         public fixed float NavInputsDownDuration[20];
         public fixed float NavInputsDownDurationPrev[20];
         public float PenPressure;
+        public byte AppFocusLost;
         public ushort InputQueueSurrogate;
         public ImVector InputQueueCharacters;
     }
@@ -165,6 +168,7 @@ namespace ImGuiNET
         public ref int MetricsActiveWindows => ref Unsafe.AsRef<int>(&NativePtr->MetricsActiveWindows);
         public ref int MetricsActiveAllocations => ref Unsafe.AsRef<int>(&NativePtr->MetricsActiveAllocations);
         public ref Vector2 MouseDelta => ref Unsafe.AsRef<Vector2>(&NativePtr->MouseDelta);
+        public ref bool WantCaptureMouseUnlessPopupClose => ref Unsafe.AsRef<bool>(&NativePtr->WantCaptureMouseUnlessPopupClose);
         public ref ImGuiKeyModFlags KeyMods => ref Unsafe.AsRef<ImGuiKeyModFlags>(&NativePtr->KeyMods);
         public ref ImGuiKeyModFlags KeyModsPrev => ref Unsafe.AsRef<ImGuiKeyModFlags>(&NativePtr->KeyModsPrev);
         public ref Vector2 MousePosPrev => ref Unsafe.AsRef<Vector2>(&NativePtr->MousePosPrev);
@@ -174,6 +178,7 @@ namespace ImGuiNET
         public RangeAccessor<bool> MouseDoubleClicked => new RangeAccessor<bool>(NativePtr->MouseDoubleClicked, 5);
         public RangeAccessor<bool> MouseReleased => new RangeAccessor<bool>(NativePtr->MouseReleased, 5);
         public RangeAccessor<bool> MouseDownOwned => new RangeAccessor<bool>(NativePtr->MouseDownOwned, 5);
+        public RangeAccessor<bool> MouseDownOwnedUnlessPopupClose => new RangeAccessor<bool>(NativePtr->MouseDownOwnedUnlessPopupClose, 5);
         public RangeAccessor<bool> MouseDownWasDoubleClick => new RangeAccessor<bool>(NativePtr->MouseDownWasDoubleClick, 5);
         public RangeAccessor<float> MouseDownDuration => new RangeAccessor<float>(NativePtr->MouseDownDuration, 5);
         public RangeAccessor<float> MouseDownDurationPrev => new RangeAccessor<float>(NativePtr->MouseDownDurationPrev, 5);
@@ -184,6 +189,7 @@ namespace ImGuiNET
         public RangeAccessor<float> NavInputsDownDuration => new RangeAccessor<float>(NativePtr->NavInputsDownDuration, 20);
         public RangeAccessor<float> NavInputsDownDurationPrev => new RangeAccessor<float>(NativePtr->NavInputsDownDurationPrev, 20);
         public ref float PenPressure => ref Unsafe.AsRef<float>(&NativePtr->PenPressure);
+        public ref bool AppFocusLost => ref Unsafe.AsRef<bool>(&NativePtr->AppFocusLost);
         public ref ushort InputQueueSurrogate => ref Unsafe.AsRef<ushort>(&NativePtr->InputQueueSurrogate);
         public ImVector<ushort> InputQueueCharacters => new ImVector<ushort>(NativePtr->InputQueueCharacters);
         public void AddFocusEvent(bool focused)
@@ -228,6 +234,10 @@ namespace ImGuiNET
         public void ClearInputCharacters()
         {
             ImGuiNative.ImGuiIO_ClearInputCharacters((ImGuiIO*)(NativePtr));
+        }
+        public void ClearInputKeys()
+        {
+            ImGuiNative.ImGuiIO_ClearInputKeys((ImGuiIO*)(NativePtr));
         }
         public void Destroy()
         {
