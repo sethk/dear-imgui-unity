@@ -1,4 +1,4 @@
-# Dear ImGui for Unity
+# Dear ImGui for Unity - ImGUI v1.84.1
 
 UPM package for the immediate mode GUI library, Dear ImGui (https://github.com/ocornut/imgui).
 
@@ -6,7 +6,17 @@ UPM package for the immediate mode GUI library, Dear ImGui (https://github.com/o
 
 - [Add package](https://docs.unity3d.com/Manual/upm-ui-giturl.html) from git URL: https://github.com/GuybrushThreepwood-GitHub/dear-imgui-unity  #_version_branch_ (e.g. https://github.com/GuybrushThreepwood-GitHub/dear-imgui-unity#v1.84.1 )
 - Add a `DearImGui` component to one of the objects in the scene.
-- When using the Universal Render Pipeline, add a `Render Im Gui Feature` render feature to the renderer asset. Assign it to the `render feature` field of the DearImGui component.
+- When using the **Universal Render Pipeline**
+  * add a `Render Im Gui Feature` render feature to the renderer asset. 
+  * Assign it to the `render feature` field of the DearImGui component.
+- When using the **HDRP Render Pipeline** 
+  * add a Custom Pass Volume component. 
+  * set the Injection Point to 'After Post Process'.
+  * Now add a pass 'DrawRenderersCustomPass' and name it 'PreDraw'.
+  * Add another pass 'ImGuiRendererHDRPPass' and name it 'DrawDearImGUI'.
+
+![image](https://user-images.githubusercontent.com/2954404/143776024-718846dc-df6d-4845-96f1-6fefab1f40f9.png)
+
 - Subscribe to the `ImGuiUn.Layout` event and use ImGui functions.
 - Example script:
   ```cs
@@ -31,6 +41,12 @@ UPM package for the immediate mode GUI library, Dear ImGui (https://github.com/o
       }
   }
   ```
+### Supported platforms
+- Windows (64 bit only)
+- MacOS
+- Linux
+- Android
+- TODO: iOS (maybe)
 
 ### See Also
 
