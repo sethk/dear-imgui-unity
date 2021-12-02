@@ -1,4 +1,4 @@
-# Dear ImGui for Unity - ImGUI v1.84.1
+# Dear ImGui for Unity - ImGUI v1.85
 
 UPM package for the immediate mode GUI library, Dear ImGui (https://github.com/ocornut/imgui).
 
