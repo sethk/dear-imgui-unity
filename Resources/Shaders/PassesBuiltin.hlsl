@@ -14,9 +14,6 @@ half4 unpack_color(uint c)
         (c >> 16) & 0xff,
         (c >> 24) & 0xff
     ) / 255;
-#ifndef UNITY_COLORSPACE_GAMMA
-    color.rgb = GammaToLinearSpace(color.rgb);
-#endif
     return color;
 }
 
@@ -25,13 +22,26 @@ Varyings ImGuiPassVertex(ImVert input)
     Varyings output  = (Varyings)0;
     output.vertex    = UnityObjectToClipPos(float4(input.vertex, 0, 1));
     output.uv        = float2(input.uv.x, 1 - input.uv.y);
-    output.color     = unpack_color(input.color);
+    output.color     = half4(GammaToLinearSpace(input.color.rgb), input.color.a);
     return output;
+}
+
+Varyings ImGuiPassPackedVertex(ImPackedVert input)
+{
+    ImVert output;
+    output.vertex = input.vertex;
+    output.uv = input.uv;
+    output.color = unpack_color(input.color);
+    return ImGuiPassVertex(output);
 }
 
 half4 ImGuiPassFrag(Varyings input) : SV_Target
 {
-    return input.color * tex2D(_Tex, input.uv);
+    half4 fragColor = input.color * tex2D(_Tex, input.uv);
+#ifdef UNITY_COLORSPACE_GAMMA
+    fragColor.rgb = LinearToGammaSpace(input.color.rgb);
+#endif
+    return fragColor;
 }
 
 #endif

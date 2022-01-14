@@ -19,17 +19,17 @@
             #pragma fragment ImGuiPassFrag
             #include "Packages/com.realgames.dear-imgui/Resources/Shaders/PassesUniversal.hlsl"
 
-            StructuredBuffer<ImVert> _Vertices;
+            StructuredBuffer<ImPackedVert> _Vertices;
             int _BaseVertex;
 
             Varyings vert(uint id : SV_VertexID)
             {
-#if defined(SHADER_API_D3D11) || defined(SHADER_API_XBOXONE)
+#if defined(SHADER_API_D3D11) || defined(SHADER_API_XBOXONE) || defined(SHADER_API_METAL)
                 // BaseVertexLocation is not automatically added to SV_VertexID
                 id += _BaseVertex;
 #endif
-                ImVert v = _Vertices[id];
-                return ImGuiPassVertex(v);
+                ImPackedVert v = _Vertices[id];
+                return ImGuiPassPackedVertex(v);
             }
             ENDHLSL
         }
@@ -54,17 +54,17 @@
             #pragma fragment ImGuiPassFrag
             #include "Packages/com.realgames.dear-imgui/Resources/Shaders/PassesBuiltin.hlsl"
 
-            StructuredBuffer<ImVert> _Vertices;
+            StructuredBuffer<ImPackedVert> _Vertices;
             int _BaseVertex;
 
             Varyings vert(uint id : SV_VertexID)
             {
-#if defined(SHADER_API_D3D11) || defined(SHADER_API_XBOXONE)
+#if defined(SHADER_API_D3D11) || defined(SHADER_API_XBOXONE) || defined(SHADER_API_METAL)
                 // BaseVertexLocation is not automatically added to SV_VertexID
                 id += _BaseVertex;
 #endif
-                ImVert v = _Vertices[id];
-                return ImGuiPassVertex(v);
+                ImPackedVert v = _Vertices[id];
+                return ImGuiPassPackedVertex(v);
             }
             ENDCG
         }
