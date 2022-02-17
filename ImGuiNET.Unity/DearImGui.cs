@@ -239,6 +239,7 @@ namespace ImGuiNET.Unity
             _platform?.Initialize(io);
         }
 
+#if HAS_HDRP
         void HDRPImGuiRender(ScriptableRenderContext context, HDCamera camera)
         {
             if (camera == null || camera.camera == null)
@@ -257,6 +258,7 @@ namespace ImGuiNET.Unity
             context.ExecuteCommandBuffer(_cmd);
             context.Submit();
         }
+#endif // HAS_HDRP
 
         public CommandBuffer GetCommandBuffer()
         {
