@@ -228,6 +228,8 @@ namespace ImGuiNET.Unity
         {
             if (io.MouseDrawCursor)
                 cursor = ImGuiMouseCursor.None;
+            if (!io.WantCaptureMouse)                                           // reset the cursor if we aren't hovering an ImGui window
+                cursor = ImGuiMouseCursor.COUNT;
 
             if (_lastCursor == cursor)
                 return;
@@ -237,7 +239,12 @@ namespace ImGuiNET.Unity
             _lastCursor = cursor;
             Cursor.visible = cursor != ImGuiMouseCursor.None;                   // hide cursor if ImGui is drawing it or if it wants no cursor
             if (_cursorShapes != null)
-                Cursor.SetCursor(_cursorShapes[cursor].texture, _cursorShapes[cursor].hotspot, CursorMode.Auto);
+            {
+                if (cursor != ImGuiMouseCursor.COUNT)
+                    Cursor.SetCursor(_cursorShapes[cursor].texture, _cursorShapes[cursor].hotspot, CursorMode.Auto);
+                else
+                    Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            }
         }
 
         void OnDeviceChange(InputDevice device, InputDeviceChange change)

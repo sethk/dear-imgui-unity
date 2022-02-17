@@ -1,11 +1,18 @@
 #ifndef DEARIMGUI_COMMON_INCLUDED
 #define DEARIMGUI_COMMON_INCLUDED
 
-struct ImVert   // same layout as ImDrawVert
+struct ImPackedVert   // same layout as ImDrawVert
+{
+    float2 vertex;
+    float2 uv;
+    uint   color;
+};
+
+struct ImVert
 {
     float2 vertex   : POSITION;
     float2 uv       : TEXCOORD0;
-    uint   color    : TEXCOORD1; // gets reordered when using COLOR semantics
+    half4  color    : TEXCOORD1; // gets reordered when using COLOR semantics
 };
 
 struct Varyings
